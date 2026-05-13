@@ -1,3 +1,4 @@
+import { playFanfare } from '../audio'
 import type { ActiveTrip as ActiveTripType, Player } from '../types'
 
 interface Props {
@@ -30,7 +31,7 @@ export default function ActiveTrip({ trip, players, onIncrement, onDecrement, on
             <div key={player.id} className="scorer">
               <div className="scorer-name">{player.name}</div>
               <div className="scorer-score">{score}</div>
-              <button className="score-btn" onClick={() => onIncrement(player.id)}>
+              <button className="score-btn" onClick={() => { onIncrement(player.id); playFanfare() }}>
                 +1
               </button>
               <button
