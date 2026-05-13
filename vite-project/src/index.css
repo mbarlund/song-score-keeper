@@ -573,6 +573,28 @@ body {
   font-size: 0.9rem;
 }
 
+.btn-show-more {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: none;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-blue);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.btn-show-more:hover { border-color: var(--color-blue); }
+
+.show-more-hint {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
 .empty-history {
   text-align: center;
   color: var(--color-text-muted);
