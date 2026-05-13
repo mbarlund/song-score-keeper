@@ -1,17 +1,18 @@
-import type { Trip, PlayerNames, Stats } from '../types'
-import StatsCards from './StatsCards'
+import type { Trip, Player, PlayerStats } from '../types'
+import Leaderboard from './Leaderboard'
+import PlayerManager from './PlayerManager'
 import TripHistory from './TripHistory'
-import PlayerNameEditor from './PlayerNameEditor'
 
 interface Props {
+  players: Player[]
   trips: Trip[]
-  playerNames: PlayerNames
-  stats: Stats
+  allStats: PlayerStats[]
   onStartTrip: () => void
-  onUpdateNames: (me: string, wife: string) => void
+  onAddPlayer: (name: string) => void
+  onRenamePlayer: (id: string, name: string) => void
 }
 
-export default function Dashboard({ trips, playerNames, stats, onStartTrip, onUpdateNames }: Props) {
+export default function Dashboard({ players, trips, allStats, onStartTrip, onAddPlayer, onRenamePlayer }: Props) {
   return (
     <>
       <header className="app-header">
@@ -20,15 +21,17 @@ export default function Dashboard({ trips, playerNames, stats, onStartTrip, onUp
       </header>
 
       <div className="page">
-        <PlayerNameEditor playerNames={playerNames} onSave={onUpdateNames} />
+        <Leaderboard players={players} allStats={allStats} />
 
-        <StatsCards stats={stats} myName={playerNames.me} />
-
-        <button className="btn-primary" onClick={onStartTrip}>
+        <button className="btn-primary" onClick={onStartTrip} style={{ marginTop: 24 }}>
           🏰 Start New Trip
         </button>
 
-        <TripHistory trips={trips} playerNames={playerNames} />
+        <PlayerManager players={players} onAdd={onAddPlayer} onRename={onRenamePlayer} />
+
+        <div style={{ marginTop: 28 }}>
+          <TripHistory trips={trips} players={players} />
+        </div>
       </div>
     </>
   )
