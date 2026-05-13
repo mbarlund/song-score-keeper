@@ -384,6 +384,29 @@ body {
   box-shadow: none;
 }
 
+.score-btn-minus {
+  width: 100%;
+  padding: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--color-text-muted);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.score-btn-minus:hover:not(:disabled) {
+  border-color: var(--color-loss);
+  color: var(--color-loss);
+}
+
+.score-btn-minus:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
 .trip-actions {
   display: flex;
   flex-direction: column;

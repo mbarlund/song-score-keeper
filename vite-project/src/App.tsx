@@ -62,6 +62,21 @@ export default function App() {
     })
   }
 
+  function decrementScore(playerId: string) {
+    mutate(prev => {
+      if (!prev.activeTrip) return prev
+      return {
+        ...prev,
+        activeTrip: {
+          ...prev.activeTrip,
+          scores: prev.activeTrip.scores.map(s =>
+            s.playerId === playerId ? { ...s, score: Math.max(0, s.score - 1) } : s
+          ),
+        },
+      }
+    })
+  }
+
   function endTrip() {
     mutate(prev => {
       if (!prev.activeTrip) return prev
@@ -87,6 +102,7 @@ export default function App() {
         trip={state.activeTrip}
         players={activePlayers}
         onIncrement={incrementScore}
+        onDecrement={decrementScore}
         onEnd={endTrip}
         onCancel={cancelTrip}
       />

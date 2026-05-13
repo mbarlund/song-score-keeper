@@ -4,6 +4,7 @@ interface Props {
   trip: ActiveTripType
   players: Player[]
   onIncrement: (playerId: string) => void
+  onDecrement: (playerId: string) => void
   onEnd: () => void
   onCancel: () => void
 }
@@ -13,7 +14,7 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 }
 
-export default function ActiveTrip({ trip, players, onIncrement, onEnd, onCancel }: Props) {
+export default function ActiveTrip({ trip, players, onIncrement, onDecrement, onEnd, onCancel }: Props) {
   return (
     <>
       <header className="active-trip-header">
@@ -31,6 +32,13 @@ export default function ActiveTrip({ trip, players, onIncrement, onEnd, onCancel
               <div className="scorer-score">{score}</div>
               <button className="score-btn" onClick={() => onIncrement(player.id)}>
                 +1
+              </button>
+              <button
+                className="score-btn-minus"
+                onClick={() => onDecrement(player.id)}
+                disabled={score === 0}
+              >
+                −1
               </button>
             </div>
           )
