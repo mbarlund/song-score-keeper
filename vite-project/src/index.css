@@ -122,6 +122,7 @@ body {
 
 .leaderboard-row.leader {
   background: #fffbeb;
+  border-left: 3px solid var(--color-gold);
 }
 
 .lb-name {
@@ -572,6 +573,28 @@ body {
   font-size: 0.9rem;
 }
 
+.btn-show-more {
+  display: block;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  background: none;
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  color: var(--color-blue);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.btn-show-more:hover { border-color: var(--color-blue); }
+
+.show-more-hint {
+  color: var(--color-text-muted);
+  font-weight: 400;
+}
+
 .empty-history {
   text-align: center;
   color: var(--color-text-muted);
@@ -587,4 +610,13 @@ body {
     --color-text-muted: #9ca3af;
     --color-border: #2d3148;
   }
+
+  /* Replace hardcoded light backgrounds with dark equivalents */
+  .player-select-item.checked       { background: #1e3a5f; color: #f0f0f5; }
+  .leaderboard-row.leader            { background: #2a2210; }
+  .trip-badge.win                    { background: #14532d; color: #86efac; }
+  .trip-badge.loss                   { background: #450a0a; color: #fca5a5; }
+  .trip-badge.tie                    { background: #1f2937; color: #9ca3af; }
+  .trip-player-score.win             { background: #14532d; color: #86efac; }
+  .trip-player-score.tie             { background: #422006; color: #fcd34d; }
 }
