@@ -22,6 +22,7 @@ export interface ActiveTrip {
 
 export interface AppState {
   players: Player[]
+  deletedPlayers: Player[]  // retained for name lookup in trip history
   trips: Trip[]
   activeTrip: ActiveTrip | null
 }

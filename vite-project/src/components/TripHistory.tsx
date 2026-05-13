@@ -7,6 +7,7 @@ const PAGE_SIZE = 10
 interface Props {
   trips: Trip[]
   players: Player[]
+  deletedPlayers: Player[]
 }
 
 function formatDate(dateStr: string): string {
@@ -14,18 +15,22 @@ function formatDate(dateStr: string): string {
   return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
 }
 
-function playerName(players: Player[], id: string): string {
-  return players.find(p => p.id === id)?.name ?? 'Unknown'
+function playerName(players: Player[], deletedPlayers: Player[], id: string): string {
+  return (
+    players.find(p => p.id === id)?.name ??
+    deletedPlayers.find(p => p.id === id)?.name ??
+    'Unknown'
+  )
 }
 
-function tripSummary(trip: Trip, players: Player[]): string {
+function tripSummary(trip: Trip, players: Player[], deletedPlayers: Player[]): string {
   const max = Math.max(...trip.scores.map(s => s.score))
   const winners = trip.scores.filter(s => s.score === max)
   if (winners.length > 1) return `Tie (${max} pts)`
-  return `${playerName(players, winners[0].playerId)} wins`
+  return `${playerName(players, deletedPlayers, winners[0].playerId)} wins`
 }
 
-export default function TripHistory({ trips, players }: Props) {
+export default function TripHistory({ trips, players, deletedPlayers }: Props) {
   const [visible, setVisible] = useState(PAGE_SIZE)
 
   if (trips.length === 0) {
@@ -49,7 +54,7 @@ export default function TripHistory({ trips, players }: Props) {
               <div className="trip-row-top">
                 <span className="trip-date">{formatDate(trip.date)}</span>
                 <span className={`trip-badge ${isTie ? 'tie' : 'win'}`}>
-                  {tripSummary(trip, players)}
+                  {tripSummary(trip, players, deletedPlayers)}
                 </span>
               </div>
               <div className="trip-scores-row">
@@ -60,7 +65,7 @@ export default function TripHistory({ trips, players }: Props) {
                     const result = playerTripResult(trip, s.playerId)
                     return (
                       <span key={s.playerId} className={`trip-player-score ${result}`}>
-                        {playerName(players, s.playerId)}: {s.score}
+                        {playerName(players, deletedPlayers, s.playerId)}: {s.score}
                       </span>
                     )
                   })}
