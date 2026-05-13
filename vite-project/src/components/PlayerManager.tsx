@@ -5,12 +5,14 @@ interface Props {
   players: Player[]
   onAdd: (name: string) => void
   onRename: (id: string, name: string) => void
+  onDelete: (id: string) => void
 }
 
-export default function PlayerManager({ players, onAdd, onRename }: Props) {
+export default function PlayerManager({ players, onAdd, onRename, onDelete }: Props) {
   const [newName, setNewName] = useState('')
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editDraft, setEditDraft] = useState('')
+  const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null)
 
   function handleAdd() {
     const trimmed = newName.trim()
@@ -20,6 +22,7 @@ export default function PlayerManager({ players, onAdd, onRename }: Props) {
   }
 
   function startEdit(p: Player) {
+    setConfirmDeleteId(null)
     setEditingId(p.id)
     setEditDraft(p.name)
   }
@@ -51,10 +54,25 @@ export default function PlayerManager({ players, onAdd, onRename }: Props) {
                 onBlur={() => commitEdit(p.id)}
                 onKeyDown={e => handleEditKey(e, p.id)}
               />
+            ) : confirmDeleteId === p.id ? (
+              <div className="player-delete-confirm">
+                <span>Delete {p.name}?</span>
+                <div className="player-delete-actions">
+                  <button className="btn-confirm-yes" onClick={() => { onDelete(p.id); setConfirmDeleteId(null) }}>
+                    Delete
+                  </button>
+                  <button className="btn-confirm-no" onClick={() => setConfirmDeleteId(null)}>
+                    Cancel
+                  </button>
+                </div>
+              </div>
             ) : (
               <>
                 <span className="player-list-name">{p.name}</span>
-                <button className="player-edit-btn" onClick={() => startEdit(p)}>✏️</button>
+                <div className="player-action-btns">
+                  <button className="player-edit-btn" onClick={() => startEdit(p)} title="Rename">✏️</button>
+                  <button className="player-delete-btn" onClick={() => setConfirmDeleteId(p.id)} title="Delete">🗑️</button>
+                </div>
               </>
             )}
           </li>
@@ -69,11 +87,7 @@ export default function PlayerManager({ players, onAdd, onRename }: Props) {
           onChange={e => setNewName(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && handleAdd()}
         />
-        <button
-          className="add-player-btn"
-          onClick={handleAdd}
-          disabled={!newName.trim()}
-        >
+        <button className="add-player-btn" onClick={handleAdd} disabled={!newName.trim()}>
           Add
         </button>
       </div>

@@ -9,6 +9,7 @@ function defaultState(): AppState {
       { id: 'player-me', name: 'Me' },
       { id: 'player-wife', name: 'Wife' },
     ],
+    deletedPlayers: [],
     trips: [],
     activeTrip: null,
   }
@@ -40,6 +41,7 @@ function migrateV1(): AppState | null {
         { id: meId, name: meName },
         { id: wifeId, name: wifeName },
       ],
+      deletedPlayers: [],
       trips,
       activeTrip: null,
     }
@@ -51,7 +53,11 @@ function migrateV1(): AppState | null {
 export function loadState(): AppState {
   try {
     const raw = localStorage.getItem(KEY)
-    if (raw) return JSON.parse(raw) as AppState
+    if (raw) {
+      const parsed = JSON.parse(raw) as Partial<AppState> & Omit<AppState, 'deletedPlayers'>
+      // Backfill deletedPlayers for existing saves that predate this field
+      return { deletedPlayers: [], ...parsed } as AppState
+    }
     // Try migrating from v1
     const migrated = migrateV1()
     if (migrated) {

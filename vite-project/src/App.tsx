@@ -27,6 +27,18 @@ export default function App() {
     }))
   }
 
+  function deletePlayer(id: string) {
+    mutate(prev => {
+      const player = prev.players.find(p => p.id === id)
+      if (!player) return prev
+      return {
+        ...prev,
+        players: prev.players.filter(p => p.id !== id),
+        deletedPlayers: [...prev.deletedPlayers, player],
+      }
+    })
+  }
+
   function renamePlayer(id: string, name: string) {
     mutate(prev => ({
       ...prev,
@@ -129,11 +141,13 @@ export default function App() {
   return (
     <Dashboard
       players={state.players}
+      deletedPlayers={state.deletedPlayers}
       trips={state.trips}
       allStats={allStats}
       onStartTrip={() => setView('trip-setup')}
       onAddPlayer={addPlayer}
       onRenamePlayer={renamePlayer}
+      onDeletePlayer={deletePlayer}
       onClearHistory={clearHistory}
     />
   )

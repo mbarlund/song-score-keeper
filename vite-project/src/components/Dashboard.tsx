@@ -6,15 +6,17 @@ import TripHistory from './TripHistory'
 
 interface Props {
   players: Player[]
+  deletedPlayers: Player[]
   trips: Trip[]
   allStats: PlayerStats[]
   onStartTrip: () => void
   onAddPlayer: (name: string) => void
   onRenamePlayer: (id: string, name: string) => void
+  onDeletePlayer: (id: string) => void
   onClearHistory: () => void
 }
 
-export default function Dashboard({ players, trips, allStats, onStartTrip, onAddPlayer, onRenamePlayer, onClearHistory }: Props) {
+export default function Dashboard({ players, deletedPlayers, trips, allStats, onStartTrip, onAddPlayer, onRenamePlayer, onDeletePlayer, onClearHistory }: Props) {
   const [confirming, setConfirming] = useState(false)
 
   function handleClear() {
@@ -36,10 +38,10 @@ export default function Dashboard({ players, trips, allStats, onStartTrip, onAdd
           🏰 Start New Trip
         </button>
 
-        <PlayerManager players={players} onAdd={onAddPlayer} onRename={onRenamePlayer} />
+        <PlayerManager players={players} onAdd={onAddPlayer} onRename={onRenamePlayer} onDelete={onDeletePlayer} />
 
         <div style={{ marginTop: 28 }}>
-          <TripHistory trips={trips} players={players} />
+          <TripHistory trips={trips} players={players} deletedPlayers={deletedPlayers} />
         </div>
 
         {trips.length > 0 && (
