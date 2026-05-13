@@ -77,6 +77,10 @@ export default function App() {
     })
   }
 
+  function clearHistory() {
+    mutate(prev => ({ ...prev, trips: [] }))
+  }
+
   function endTrip() {
     mutate(prev => {
       if (!prev.activeTrip) return prev
@@ -130,6 +134,7 @@ export default function App() {
       onStartTrip={() => setView('trip-setup')}
       onAddPlayer={addPlayer}
       onRenamePlayer={renamePlayer}
+      onClearHistory={clearHistory}
     />
   )
 }

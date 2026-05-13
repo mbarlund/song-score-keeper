@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import type { Trip, Player, PlayerStats } from '../types'
 import Leaderboard from './Leaderboard'
 import PlayerManager from './PlayerManager'
@@ -10,9 +11,17 @@ interface Props {
   onStartTrip: () => void
   onAddPlayer: (name: string) => void
   onRenamePlayer: (id: string, name: string) => void
+  onClearHistory: () => void
 }
 
-export default function Dashboard({ players, trips, allStats, onStartTrip, onAddPlayer, onRenamePlayer }: Props) {
+export default function Dashboard({ players, trips, allStats, onStartTrip, onAddPlayer, onRenamePlayer, onClearHistory }: Props) {
+  const [confirming, setConfirming] = useState(false)
+
+  function handleClear() {
+    onClearHistory()
+    setConfirming(false)
+  }
+
   return (
     <>
       <header className="app-header">
@@ -32,6 +41,24 @@ export default function Dashboard({ players, trips, allStats, onStartTrip, onAdd
         <div style={{ marginTop: 28 }}>
           <TripHistory trips={trips} players={players} />
         </div>
+
+        {trips.length > 0 && (
+          <div className="clear-history-section">
+            {confirming ? (
+              <div className="confirm-clear">
+                <span>Clear all trip history?</span>
+                <div className="confirm-clear-actions">
+                  <button className="btn-confirm-yes" onClick={handleClear}>Yes, clear it</button>
+                  <button className="btn-confirm-no" onClick={() => setConfirming(false)}>Cancel</button>
+                </div>
+              </div>
+            ) : (
+              <button className="btn-clear-history" onClick={() => setConfirming(true)}>
+                Clear History
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </>
   )
